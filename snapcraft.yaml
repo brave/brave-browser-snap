@@ -1,5 +1,5 @@
 name: brave
-version: 1.43.89
+version: 1.43.89 # can't use adopt-info because of build method below
 grade: stable
 architectures:
   - build-on: amd64
