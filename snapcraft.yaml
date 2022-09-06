@@ -1,5 +1,5 @@
 name: brave
-version: 1.43.89
+adopt-info: brave
 grade: stable
 architectures:
   - build-on: amd64
@@ -10,11 +10,17 @@ description: |
  today with our new Brave Payments system.
 confinement: strict
 compression: lzo
-base: core18
+base: core20
+
+assumes:
+  - command-chain
+
 apps:
   brave:
     command: bin/desktop-launch $SNAP/opt/brave.com/brave/brave-browser
     desktop: usr/share/applications/brave-browser.desktop
+    command-chain: 
+      - bin/homeishome-launch        
     environment:
       DISABLE_WAYLAND: 1
       BRAVE_DESKTOP: brave-browser.desktop
@@ -46,6 +52,7 @@ apps:
       - x11
     slots:
       - mpris
+
 plugs:
   browser-sandbox:
     interface: browser-support
@@ -62,6 +69,7 @@ plugs:
     interface: content
     target: $SNAP/data-dir/sounds
     default-provider: gtk-common-themes
+
 parts:
   brave:
     plugin: dump
@@ -78,12 +86,15 @@ parts:
       - shared-mime-info
       - ubuntu-settings
       - fonts-liberation
+      
     override-pull: |
       set -eu
       snapcraftctl pull
+      snapcraftctl set-version "$(git describe --tags | sed 's/^v//' | cut -d "-" -f1)" # used for adopt-info
       chmod 0755 ./opt/brave.com/brave/chrome-sandbox
       rm -rf etc/cron.daily/ usr/bin/brave-browser usr/bin/brave-browser-stable
       sed -i 's|Icon=brave-browser|Icon=/opt/brave.com/brave/product_logo_128\.png|g' usr/share/applications/brave-browser.desktop
+     
     prime:
       - -etc/gss
       - -etc/init.d
@@ -114,6 +125,7 @@ parts:
       - -usr/share/zsh
       - -var
       - -opt/brave.com/brave/chrome-sandbox
+      
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
@@ -156,6 +168,12 @@ parts:
       - -usr/share/presage
       - -usr/share/upstart
       - -var
+  
+  homeishome-launch:
+    plugin: nil
+    stage-snaps:
+      - homeishome-launch      
+  
   shared-mime-info:
     after: [brave]
     plugin: nil
@@ -164,6 +182,7 @@ parts:
       set -eu
       glib-compile-schemas usr/share/glib-2.0/schemas
       update-mime-database usr/share/mime
+      
   gtk-key-themes:
     plugin: nil
     stage-packages:
