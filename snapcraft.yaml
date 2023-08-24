@@ -31,7 +31,6 @@ apps:
       - camera
       - content
       - cups
-      - cups-control
       - home
       - joystick
       - mount-observe
