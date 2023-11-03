@@ -12,8 +12,6 @@ description: |
 confinement: strict
 compression: lzo
 base: core22
-assumes:
-  - snapd2.55 # TODO: temporarily needed for the cups interface
 apps:
   brave:
     command: opt/brave.com/brave/brave-browser
@@ -31,7 +29,7 @@ apps:
       - bluez
       - camera
       - content
-      - cups
+      - cups-control
       - hardware-observe
       - home
       - joystick
@@ -55,12 +53,6 @@ plugs:
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
-  # TODO: Temporarily needed for the cups interface
-  foo-install-cups:
-    interface: content
-    content: foo
-    default-provider: cups
-    target: $SNAP_DATA/foo
 slots:
   mpris:
     interface: mpris
