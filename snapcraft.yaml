@@ -32,6 +32,7 @@ apps:
       - camera
       - content
       - cups
+      - hardware-observe
       - home
       - joystick
       - mount-observe
@@ -45,8 +46,8 @@ apps:
       - removable-media
       - screen-inhibit-control
       - system-packages-doc
-      - unity7
       - u2f-devices
+      - unity7
       - upower-observe
     slots:
       - mpris
