@@ -28,7 +28,6 @@ apps:
       - audio-record
       - bluez
       - camera
-      - content
       - cups-control
       - hardware-observe
       - home
