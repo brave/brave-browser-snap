@@ -19,7 +19,6 @@ apps:
     extensions:
       - gnome
     environment:
-      DISABLE_WAYLAND: 1
       GTK_USE_PORTAL: 1
       BRAVE_DESKTOP: brave-browser.desktop
       BRAVE_CONFIG_HOME: $SNAP_USER_COMMON
@@ -44,14 +43,22 @@ apps:
       - screen-inhibit-control
       - system-packages-doc
       - u2f-devices
+      - wayland
       - unity7
       - upower-observe
+    command-chain:
+      - bin/graphics-core22-wrapper
     slots:
       - mpris
 plugs:
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
+  graphics-core22:
+    interface: content
+    target: $SNAP/graphics
+    default-provider: mesa-core22
+
 slots:
   mpris:
     interface: mpris
@@ -67,7 +74,7 @@ parts:
       rm -rf etc/cron.daily/ usr/bin/brave-browser usr/bin/brave-browser-stable
       sed -i 's|Icon=brave-browser|Icon=/opt/brave.com/brave/product_logo_128\.png|g' usr/share/applications/brave-browser.desktop
     prime:
-      - -etc/gss
+      - -etc/gssx 
       - -etc/init.d
       - -etc/sensors.d
       - -etc/ucf.conf
@@ -95,3 +102,12 @@ parts:
       - -usr/share/upstart
       - -usr/share/zsh
       - -var
+  graphics-core22:
+    after: [brave]
+    source: https://github.com/MirServer/graphics-core22.git
+    plugin: dump
+    override-prime: |
+      craftctl default
+      ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
+    prime:
+      - bin/graphics-core22-wrapper
