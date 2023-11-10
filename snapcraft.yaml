@@ -74,7 +74,7 @@ parts:
       rm -rf etc/cron.daily/ usr/bin/brave-browser usr/bin/brave-browser-stable
       sed -i 's|Icon=brave-browser|Icon=/opt/brave.com/brave/product_logo_128\.png|g' usr/share/applications/brave-browser.desktop
     prime:
-      - -etc/gssx 
+      - -etc/gss
       - -etc/init.d
       - -etc/sensors.d
       - -etc/ucf.conf
