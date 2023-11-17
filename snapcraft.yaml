@@ -21,7 +21,8 @@ apps:
     environment:
       DISABLE_WAYLAND: 1
       GTK_USE_PORTAL: 1
-      CHROME_DESKTOP: brave.desktop
+      BRAVE_SNAP: 1
+      BRAVE_DESKTOP: brave.desktop
       BRAVE_CONFIG_HOME: $SNAP_USER_COMMON
     plugs:
       - audio-playback
