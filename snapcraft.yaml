@@ -4,7 +4,6 @@ grade: stable
 architectures:
   - build-on: amd64
   - build-on: arm64
-
 summary: Browse faster and safer with Brave.
 description: |
  The new Brave browser automatically blocks ads and trackers, making it
@@ -13,7 +12,6 @@ description: |
 confinement: strict
 compression: lzo
 base: core22
-
 apps:
   brave:
     command: opt/brave.com/brave/brave-browser
@@ -51,21 +49,18 @@ apps:
       - upower-observe
     slots:
       - mpris
-
 plugs:
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
-
 slots:
   mpris:
     interface: mpris
     name: brave
-
 parts:
   brave:
     plugin: dump
-    source: https://github.com/brave/brave-browser/releases/download/v${SNAPCRAFT_PROJECT_VERSION}/brave-browser_${SNAPCRAFT_PROJECT_VERSION}_${CRAFT_ARCH_BUILD_FOR}.deb
+    source: https://github.com/brave/brave-browser/releases/download/v$SNAPCRAFT_PROJECT_VERSION/brave-browser_$SNAPCRAFT_PROJECT_VERSION_$SNAPCRAFT_TARGET_ARCH.deb
     override-pull: |
       set -eu
       craftctl default
@@ -102,15 +97,3 @@ parts:
       - -usr/share/upstart
       - -usr/share/zsh
       - -var
-
-  # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
-  # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
-  # xdg-open is a wrapper provided by the core snap.
-  xdg-email:
-    plugin: nil
-    override-pull: ""
-    override-prime: |
-      set -eux
-      mkdir -p usr/bin
-      cd usr/bin
-      ln -s /usr/bin/xdg-open xdg-email
