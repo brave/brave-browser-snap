@@ -24,6 +24,10 @@ apps:
       BRAVE_SNAP: 1
       BRAVE_DESKTOP: brave.desktop
       BRAVE_CONFIG_HOME: $SNAP_USER_COMMON
+      MAN_TEST_DISABLE_SYSTEM_CONFIG: 1
+      MANPATH: $SNAP/usr/share/man
+      GROFF_FONT_PATH: $SNAP/usr/share/groff/current/font
+      GROFF_TMAC_PATH: $SNAP/usr/share/groff/current/tmac
     plugs:
       - audio-playback
       - audio-record
@@ -86,7 +90,6 @@ parts:
       - -usr/share/GConf
       - -usr/share/icons
       - -usr/share/lintian
-      - -usr/share/man
       - -usr/share/pam-configs
       - -usr/share/pkgconfig
       - -usr/share/polkit-1
@@ -97,6 +100,8 @@ parts:
       - -usr/share/upstart
       - -usr/share/zsh
       - -var
+    organize:
+      usr/share/man/man1/brave-browser.1.gz: usr/share/man/man1/brave.1.gz
 
   # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
   # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
@@ -110,3 +115,26 @@ parts:
       cp /snap/core22/current/usr/bin/xdg-open usr/bin
       cd usr/bin
       ln -s xdg-open xdg-email
+
+  manpage:
+    plugin: nil
+    stage-packages:
+      - groff-base
+      - libgdbm6
+      - libpipeline1
+      - man-db
+    prime:
+      - -etc
+      - -usr/lib/tmpfiles.d
+      - -usr/lib/mime
+      - -usr/lib/groff
+      - -usr/share/bug
+      - -usr/share/calendar
+      - -usr/share/doc
+      - -usr/share/doc-base
+      - -usr/share/lintian
+      - -usr/share/man
+      - -usr/share/man-db
+      - -var
+    organize:
+      usr/lib/man-db: usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR
