@@ -1,4 +1,4 @@
-This repo is now obsolete, thank you to all the previous contributors.
+This repo is now obsolete, thank you to all the previous contributors in https://github.com/brave/brave-browser-snap/pulls?q=is%3Apr+is%3Aclosed.
 
 Snap YAML has moved to https://github.com/brave/brave-core/blob/master/snapcraft.yaml
 
